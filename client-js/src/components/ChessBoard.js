@@ -80,7 +80,57 @@ export class ChessBoard {
      *        - Insertar el indicador dentro de la casilla.
      */
     render(gameState, selectedSquare, legalMoves = []) {
-        // TODO: Implementar el renderizado del tablero según la especificación de requerimientos de arriba.
+        // RF-CB-01: sin estado remoto no hay nada que pintar.
+        if (!gameState || !gameState.board) {
+            return;
+        }
+
+        // RF-CB-02: coordenadas de la ultima jugada registrada en el servidor.
+        let lastFrom = null;
+        let lastTo = null;
+        if (gameState.moves && gameState.moves.length > 0) {
+            const lastMove = gameState.moves[gameState.moves.length - 1];
+            lastFrom = lastMove.fromPos;
+            lastTo = lastMove.toPos;
+        }
+
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 8; c++) {
+                const tile = this.tiles[r][c];
+                const piece = gameState.board[r][c];
+
+                const isLight = (r + c) % 2 === 0;
+                tile.className = `tile ${isLight ? "light" : "dark"}`;
+                tile.replaceChildren();
+
+                if ((lastFrom && lastFrom.row === r && lastFrom.col === c) ||
+                    (lastTo && lastTo.row === r && lastTo.col === c)) {
+                    tile.classList.add("last-move");
+                }
+
+                if (selectedSquare && selectedSquare.row === r && selectedSquare.col === c) {
+                    tile.classList.add("selected");
+                }
+
+                // RF-CB-03: glifo Unicode de la pieza.
+                const hasPiece = piece && piece.type && piece.type._name !== "PIECEEMPTY";
+                if (hasPiece) {
+                    const span = document.createElement("span");
+                    const isWhite = piece.color && piece.color._name === "COLORWHITE";
+                    span.className = isWhite ? "piece-white" : "piece-black";
+                    span.textContent = getPieceGlyph(piece);
+                    tile.appendChild(span);
+                }
+
+                // RF-CB-04: indicadores de destino candidato.
+                const isLegalTarget = legalMoves.some(m => m.row === r && m.col === c);
+                if (isLegalTarget) {
+                    const hint = document.createElement("div");
+                    hint.className = hasPiece ? "capture-ring" : "move-dot";
+                    tile.appendChild(hint);
+                }
+            }
+        }
     }
 
     getElement() {

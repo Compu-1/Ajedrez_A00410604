@@ -11,6 +11,7 @@
     "ice": "^3.7.110"
   },
   "devDependencies": {
-    "serve": "^14.2.4"
+    "serve": "^14.2.4",
+    "slice2js": "^3.7.110"
   }
 }

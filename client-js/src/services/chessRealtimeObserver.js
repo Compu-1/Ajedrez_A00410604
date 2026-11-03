@@ -14,40 +14,75 @@ export class ChessRealtimeObserver {
         this.onGameFinishedCallback = null;
     }
 
-    /**
-     * Crea el servant de ChessObserver, configura el ObjectAdapter bidireccional
-     * sobre la conexión WebSocket activa y registra el observador en la sala.
-     */
     async subscribe(communicator, servicePrx, roomCode, nickname, { onStateChanged, onGameFinished } = {}) {
-        // TODO (Paso 3.1): Limpiar cualquier adaptador previo invocando await this.cleanupAdapter()
-        // y almacenar los callbacks onStateChanged y onGameFinished.
+        // 3.1: un solo adaptador vivo a la vez.
+        await this.cleanupAdapter();
+        this.onStateChangedCallback = onStateChanged || null;
+        this.onGameFinishedCallback = onGameFinished || null;
 
-        // TODO (Paso 3.2): Definir una clase servant (ej. WebChessObserverServant) que extienda
-        // this.ChessApp.ChessObserver e implemente:
-        //   - onGameStateChanged(newState, _current)
-        //   - onGameFinished(finalState, winnerNickname, pointsDelta, _current)
+        // 3.2: servant que implementa el contrato Slice ChessObserver.
+        const self = this;
+        class WebChessObserverServant extends this.ChessApp.ChessObserver {
+            onGameStateChanged(newState, _current) {
+                if (self.onStateChangedCallback) {
+                    self.onStateChangedCallback(newState);
+                }
+            }
 
-        // TODO (Paso 3.3): Crear un ObjectAdapter sin endpoints con communicator.createObjectAdapter(""),
-        // generar una identidad única con new this.Ice.Identity(this.Ice.generateUUID(), "ChessObserver"),
-        // registrar la instancia del servant con this.adapter.add(...) y activar el adaptador.
+            onGameFinished(finalState, winnerNickname, pointsDelta, _current) {
+                if (self.onGameFinishedCallback) {
+                    self.onGameFinishedCallback(finalState, winnerNickname, pointsDelta);
+                }
+            }
+        }
 
-        // TODO (Paso 3.4): Obtener la conexión WebSocket activa con await servicePrx.ice_getConnection(),
-        // asociarle el adaptador con connection.setAdapter(this.adapter), crear el proxy del observador
-        // con this.ChessApp.ChessObserverPrx.uncheckedCast(...) e invocar:
-        // await servicePrx.registerObserver(roomCode, nickname, observerPrx);
+        // 3.3: ObjectAdapter SIN endpoints (el navegador no puede escuchar puertos).
+        this.adapter = await communicator.createObjectAdapter("");
+        this.identity = new this.Ice.Identity(this.Ice.generateUUID(), "ChessObserver");
+        const observerBase = this.adapter.add(new WebChessObserverServant(), this.identity);
+        await this.adapter.activate();
+
+        // 3.4: BiDir -> el adaptador se asocia a la conexion WebSocket ya abierta.
+        const connection = await servicePrx.ice_getConnection();
+        connection.setAdapter(this.adapter);
+
+        const observerPrx = this.ChessApp.ChessObserverPrx.uncheckedCast(observerBase);
+        await servicePrx.registerObserver(roomCode, nickname, observerPrx);
+
+        return observerPrx;
     }
 
-    /**
-     * Desvincula el observador de la sala en el servidor y limpia el adaptador local.
-     */
     async unsubscribe(servicePrx, roomCode, nickname) {
-        // TODO (Paso 3.5): Limpiar los callbacks locales, invocar
-        // await servicePrx.unregisterObserver(roomCode, nickname) (manejando posibles excepciones)
-        // y llamar a await this.cleanupAdapter().
+        this.onStateChangedCallback = null;
+        this.onGameFinishedCallback = null;
+
+        if (servicePrx && roomCode && nickname) {
+            try {
+                await servicePrx.unregisterObserver(roomCode, nickname);
+            } catch (err) {
+                console.warn("No se pudo desregistrar el observador en el servidor:", err);
+            }
+        }
+
+        await this.cleanupAdapter();
     }
 
     async cleanupAdapter() {
-        // TODO (Paso 3.6): Si this.adapter existe, remover this.identity y destruir el adaptador
-        // (await this.adapter.destroy()), dejando this.adapter = null y this.identity = null.
+        if (!this.adapter) {
+            this.identity = null;
+            return;
+        }
+
+        try {
+            if (this.identity) {
+                this.adapter.remove(this.identity);
+            }
+            await this.adapter.destroy();
+        } catch (err) {
+            console.warn("Error liberando el ObjectAdapter bidireccional:", err);
+        } finally {
+            this.adapter = null;
+            this.identity = null;
+        }
     }
 }
