@@ -1,0 +1,11 @@
+.gradle/
+build/
+bin/
+out/
+.idea/
+*.iml
+.vscode/
+data/
+*.log
+node_modules/
+package-lock.json

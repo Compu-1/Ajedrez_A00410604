@@ -1,0 +1,29 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin'
+}
+
+dependencies {
+    implementation project(':common')
+}
+
+javafx {
+    version = '17.0.10'
+    modules = ['javafx.controls', 'javafx.graphics']
+}
+
+application {
+    mainClass = 'co.icesi.chess.client.ChessClientLauncher'
+    applicationDefaultJvmArgs = ['-Dfile.encoding=UTF-8']
+}
+
+run {
+    standardInput = System.in
+    jvmArgs '-Dfile.encoding=UTF-8'
+}
+
+tasks.register('runClient') {
+    group = 'application'
+    description = 'Ejecuta el cliente JavaFX de Ajedrez'
+    dependsOn 'run'
+}

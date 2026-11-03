@@ -1,0 +1,17 @@
+plugins {
+    id 'application'
+}
+
+dependencies {
+    implementation project(':common')
+}
+
+application {
+    mainClass = 'co.icesi.chess.server.ChessServerApp'
+}
+
+task runServer(type: JavaExec) {
+    mainClass = 'co.icesi.chess.server.ChessServerApp'
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+}

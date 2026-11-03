@@ -1,0 +1,69 @@
+plugins {
+    id 'com.zeroc.gradle.ice-builder.slice' version '1.5.0' apply false
+    id 'org.openjfx.javafxplugin' version '0.1.0' apply false
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Javadoc).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(JavaExec).configureEach {
+        jvmArgs '-Dfile.encoding=UTF-8'
+    }
+
+    dependencies {
+        implementation 'com.zeroc:ice:3.7.10'
+        testImplementation 'junit:junit:4.13.2'
+    }
+
+    test {
+        systemProperty 'file.encoding', 'UTF-8'
+        testLogging {
+            events "passed", "failed", "skipped"
+        }
+    }
+}
+
+tasks.register('runServer') {
+    group = 'application'
+    description = 'Ejecuta el servidor ZeroC Ice de Ajedrez'
+    dependsOn ':server:runServer'
+}
+
+tasks.register('runClient') {
+    group = 'application'
+    description = 'Ejecuta el cliente JavaFX de Ajedrez'
+    dependsOn ':client:runClient'
+}
+
+tasks.register('runClientJs', Exec) {
+    group = 'application'
+    description = 'Ejecuta el cliente Web en JavaScript Vainilla con ZeroC Ice'
+    workingDir = file('client-js')
+    commandLine 'npx', 'serve', '-l', '3000', '.'
+}
+
+tasks.register('generateSliceJs', Exec) {
+    group = 'build'
+    description = 'Compila los contratos Slice a JavaScript usando slice2js'
+    workingDir = file('client-js')
+    commandLine 'slice2js', '../common/src/main/slice/ChessService.ice', '--output-dir', 'src/services'
+}

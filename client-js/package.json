@@ -1,0 +1,16 @@
+{
+  "name": "ajedrez-ice-vanillajs",
+  "version": "1.0.0",
+  "description": "Frontend componetizado en JavaScript Vainilla para Ajedrez Distribuido con ZeroC Ice",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "npx serve -l 3000 .",
+    "generate-slice": "slice2js ../common/src/main/slice/ChessService.ice --output-dir src/services"
+  },
+  "dependencies": {
+    "ice": "^3.7.110"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

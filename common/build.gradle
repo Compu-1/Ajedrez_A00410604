@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+    id 'com.zeroc.gradle.ice-builder.slice'
+}
+
+slice {
+    java {
+        srcDir = 'src/main/slice'
+    }
+}
+
+compileSlice {
+    doFirst {
+        file("$buildDir/generated-src/slice2java.df.xml").delete()
+    }
+}

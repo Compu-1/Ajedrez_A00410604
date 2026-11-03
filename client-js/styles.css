@@ -1,0 +1,405 @@
+:root {
+    --bg-main: #14181E;
+    --bg-card: #1E232B;
+    --bg-input: #29303B;
+    --text-primary: #FFFFFF;
+    --text-secondary: #9E9E9E;
+    --accent-blue: #2196F3;
+    --accent-green: #4CAF50;
+    --accent-purple: #9C27B0;
+    --accent-amber: #FFB300;
+    --accent-red: #F44336;
+    
+    --tile-light: #EEEED2;
+    --tile-dark: #769656;
+    --tile-selected: #F7F769;
+    --tile-last-move: #CED964;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body, #root {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: var(--bg-card);
+    padding: 12px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+header p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.view-container {
+    padding: 20px;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+}
+
+/* ================= LOBBY ================= */
+.connection-bar {
+    background: var(--bg-card);
+    padding: 14px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+input[type="text"], input[type="number"] {
+    background: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--accent-blue);
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-primary { background: var(--accent-blue); color: white; }
+.btn-success { background: var(--accent-green); color: white; }
+.btn-purple  { background: var(--accent-purple); color: white; }
+.btn-danger  { background: var(--accent-red); color: white; }
+.btn-secondary { background: #37474F; color: white; }
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+.status-badge.connected { background: rgba(76, 175, 80, 0.2); color: #81C784; border: 1px solid #4CAF50; }
+.status-badge.disconnected { background: rgba(244, 67, 54, 0.2); color: #E57373; border: 1px solid #F44336; }
+
+.room-actions-bar {
+    background: var(--bg-card);
+    padding: 14px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.lobby-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #90CAF9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+th {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* ================= TIER BADGES ================= */
+.tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.tier-bronze   { background: #FFE0B2; color: #E65100; border: 1px solid #FFB74D; }
+.tier-silver   { background: #ECEFF1; color: #37474F; border: 1px solid #B0BEC5; }
+.tier-gold     { background: #FFF9C4; color: #F57F17; border: 1px solid #FFEE58; }
+.tier-platinum { background: #B2EBF2; color: #004D40; border: 1px solid #4DD0E1; }
+.tier-diamond  { background: #E1BEE7; color: #4A148C; border: 1px solid #BA68C8; }
+
+/* ================= GAME VIEW ================= */
+.game-top-bar {
+    background: var(--bg-card);
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.game-layout {
+    display: grid;
+    grid-template-columns: auto 320px;
+    gap: 24px;
+    justify-content: center;
+    align-items: start;
+}
+
+.board-wrapper {
+    position: relative;
+    padding: 10px;
+    background: #2b3920;
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 4px solid #3b4d2b;
+}
+
+.chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 64px);
+    grid-template-rows: repeat(8, 64px);
+    width: 512px;
+    height: 512px;
+    user-select: none;
+}
+
+.tile {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.1s;
+}
+
+.tile.light { background-color: var(--tile-light); }
+.tile.dark  { background-color: var(--tile-dark); }
+.tile.selected { background-color: var(--tile-selected) !important; }
+.tile.last-move { background-color: var(--tile-last-move) !important; }
+
+/* Puntos de sugerencia de movimiento */
+.tile .move-dot {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: rgba(76, 175, 80, 0.75);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.tile .capture-ring {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border: 4px solid rgba(229, 57, 53, 0.85);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Piezas de ajedrez */
+.piece-white {
+    color: #FFFFFF;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,0.9);
+}
+
+.piece-black {
+    color: #1A1A1A;
+    text-shadow: 0 0 2px rgba(255,255,255,0.4);
+}
+
+.game-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.player-card {
+    background: var(--bg-card);
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.player-card-header {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.player-card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.player-name {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.player-pts {
+    font-size: 0.85rem;
+    color: var(--accent-amber);
+    font-weight: 600;
+}
+
+.captured-pieces {
+    font-size: 1.15rem;
+    letter-spacing: 2px;
+    min-height: 24px;
+}
+
+.moves-card {
+    background: var(--bg-card);
+    padding: 12px;
+    border-radius: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.moves-list {
+    background: #14181E;
+    border-radius: 6px;
+    padding: 8px 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #E0E0E0;
+}
+
+.spectator-banner {
+    background: #7B1FA2;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.role-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+.role-badge.white { background: #FFFFFF; color: #1A1A1A; }
+.role-badge.black { background: #212121; color: #FFFFFF; border: 1px solid #757575; }
+.role-badge.spectator { background: #7B1FA2; color: #FFFFFF; }
+
+.turn-indicator {
+    font-size: 1rem;
+    font-weight: 700;
+}
+.turn-white { color: #FFFFFF; }
+.turn-black { color: #90CAF9; }
+.turn-check { color: #FF5252; }
+.turn-mate  { color: #69F0AE; }
+
+@media (max-width: 900px) {
+    .lobby-grid { grid-template-columns: 1fr; }
+    .game-layout { grid-template-columns: 1fr; }
+    .chessboard { width: 360px; height: 360px; grid-template-columns: repeat(8, 45px); grid-template-rows: repeat(8, 45px); }
+    .tile { width: 45px; height: 45px; font-size: 28px; }
+}

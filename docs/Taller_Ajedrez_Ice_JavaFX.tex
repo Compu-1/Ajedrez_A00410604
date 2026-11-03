@@ -1,0 +1,417 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{geometry}
+\geometry{margin=0.68in, top=0.85in, bottom=0.78in, headheight=36pt, headsep=14pt}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{lastpage}
+\usepackage{setspace}
+\usepackage{listings}
+
+% Tipografía institucional Icesi (Sans-Serif Helvetica)
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Interlineado aumentado un 30% para lectura óptima
+\setstretch{1.38}
+
+% Altura de celdas en tablas
+\renewcommand{\arraystretch}{1.25}
+
+% Paleta Oficial de Colores Icesi
+\definecolor{icesiBlue}{HTML}{5454E9}       % Azul vibrante institucional
+\definecolor{icesiOrange}{HTML}{F0681A}     % Naranja acento
+\definecolor{icesiGreen}{HTML}{4CB978}      % Verde acento
+\definecolor{icesiPurple}{HTML}{865CF0}     % Púrpura acento
+\definecolor{icesiDark}{HTML}{1A1A1A}       % Texto principal oscuro
+\definecolor{icesiMuted}{HTML}{6B7280}      % Gris metadatos
+\definecolor{icesiBorder}{HTML}{D1D5DB}     % Líneas y bordes
+\definecolor{icesiRowLine}{HTML}{E5E7EB}    % Líneas de tabla
+\definecolor{icesiLight}{HTML}{F9FAFB}      % Fondo suave
+\definecolor{codeBackground}{HTML}{F3F4F6}  % Fondo código
+
+\lstdefinestyle{bashstyle}{
+    backgroundcolor=\color{codeBackground},
+    commentstyle=\color{icesiMuted}\itshape,
+    keywordstyle=\color{icesiBlue}\bfseries,
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{icesiBorder},
+    language=bash,
+    showstringspaces=false
+}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={async, await, break, case, catch, class, const, continue, default, delete, do, else, export, extends, false, finally, for, function, if, import, in, instanceof, let, new, null, return, super, switch, this, throw, true, try, typeof, var, void, while, with, yield},
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morestring=[b]`
+}
+
+\lstdefinestyle{jsstyle}{
+    backgroundcolor=\color{codeBackground},
+    commentstyle=\color{icesiMuted}\itshape,
+    keywordstyle=\color{icesiBlue}\bfseries,
+    stringstyle=\color{icesiOrange},
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{icesiBorder},
+    language=JavaScript,
+    showstringspaces=false
+}
+
+\lstdefinestyle{javastyle}{
+    backgroundcolor=\color{codeBackground},
+    commentstyle=\color{icesiMuted}\itshape,
+    keywordstyle=\color{icesiBlue}\bfseries,
+    stringstyle=\color{icesiOrange},
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{icesiBorder},
+    language=Java,
+    showstringspaces=false
+}
+
+\lstdefinelanguage{Slice}{
+  keywords={module, interface, class, struct, sequence, dictionary, exception, throws, idempotent, void, bool, byte, short, int, long, float, double, string, enum},
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]"
+}
+
+\lstdefinestyle{slicestyle}{
+    backgroundcolor=\color{codeBackground},
+    commentstyle=\color{icesiMuted}\itshape,
+    keywordstyle=\color{icesiBlue}\bfseries,
+    stringstyle=\color{icesiOrange},
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{icesiBorder},
+    language=Slice,
+    showstringspaces=false
+}
+
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=%
+    {á}{{\'a}}1
+    {é}{{\'e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1
+    {ú}{{\'u}}1
+    {Á}{{\'A}}1
+    {É}{{\'E}}1
+    {Í}{{\'I}}1
+    {Ó}{{\'O}}1
+    {Ú}{{\'U}}1
+    {ñ}{{\~n}}1
+    {Ñ}{{\~N}}1
+    {¡}{{!`}}1
+    {¿}{{?`}}1
+}
+
+% Encabezado y Pie de Página oficial Icesi
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{%
+  \begin{minipage}[c]{2.8cm}
+    \includegraphics[height=0.58cm]{logo-icesi.png}
+  \end{minipage}%
+  \hspace{0.15cm}%
+  {\color{icesiBorder}\vrule width 0.8pt height 0.60cm}%
+  \hspace{0.2cm}%
+  \begin{minipage}[c]{10.5cm}
+    \fontsize{7.5}{9.5}\selectfont\textbf{\color{icesiDark}UNIVERSIDAD ICESI} \\
+    \fontsize{7}{9}\selectfont\textbf{\color{icesiDark}TALLER PRÁCTICO: COMPUTACIÓN EN INTERNET I} \\
+    \fontsize{6.5}{8.5}\selectfont\color{icesiMuted}Período: 2026-2 $\bullet$ Código: 09776 - TIC $\bullet$ Integración de JavaScript con ZeroC Ice vía WebSockets
+  \end{minipage}%
+}
+\fancyhead[R]{\fontsize{7.5}{9.5}\selectfont\color{icesiMuted}Pág. \thepage\ de \pageref{LastPage}}
+
+\renewcommand{\headrule}{%
+  \vspace{0.08cm}%
+  \noindent%
+  \textcolor{icesiBlue}{\rule{0.60\textwidth}{1.8pt}}%
+  \textcolor{icesiOrange}{\rule{0.18\textwidth}{1.8pt}}%
+  \textcolor{icesiGreen}{\rule{0.11\textwidth}{1.8pt}}%
+  \textcolor{icesiPurple}{\rule{0.11\textwidth}{1.8pt}}%
+}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot[L]{\fontsize{7.5}{9.5}\selectfont\color{icesiMuted}Computación en Internet I $\bullet$ Ajedrez Distribuido con ZeroC Ice (JavaFX \& Vanilla JS)}
+\fancyfoot[R]{\fontsize{7.5}{9.5}\selectfont\color{icesiMuted}Universidad Icesi $\bullet$ Dpto. TIC}
+
+\newcommand{\sectionBadge}[1]{%
+  \refstepcounter{section}%
+  \vspace{0.24cm}%
+  \noindent%
+  \colorbox{icesiBlue}{\color{white}\rule[-0.08cm]{0pt}{0.42cm}\hspace{0.16cm}\textbf{\normalsize \thesection}\hspace{0.16cm}}%
+  \hspace{0.18cm}%
+  {\fontsize{9.5}{12}\selectfont\textbf{\color{icesiDark}#1}}\\[-0.10cm]%
+  \noindent{\color{icesiDark}\rule{\textwidth}{0.8pt}}\vspace{0.10cm}%
+}
+
+\titleformat{\subsection}
+  {\color{icesiBlue}\normalfont\normalsize\bfseries}
+  {\thesubsection}{0.4em}{}
+\titlespacing*{\subsection}{0pt}{0.6ex plus 0.2ex minus .1ex}{0.2ex plus .1ex}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\begin{document}
+
+% Presentación
+\noindent
+{\fontsize{8.5}{11}\selectfont\textbf{\color{icesiBlue}TALLER PRÁCTICO DE SISTEMAS DISTRIBUIDOS Y RPC}}\\[0.06cm]
+{\fontsize{13}{16}\selectfont\textbf{Integración de JavaScript Vainilla con ZeroC Ice sobre WebSockets Bidireccionales}}\\[0.04cm]
+{\fontsize{9.5}{12}\selectfont\color{icesiMuted}Compilación de Contratos Slice a JS, Invocación Remota RPC y Callbacks en Tiempo Real (\texttt{BiDir}) sin Polling}\\[0.10cm]
+{\color{icesiRowLine}\hrule height 0.6pt}\vspace{0.10cm}
+
+\noindent
+{\color{icesiBlue}\textbf{\rule{2.5pt}{8.5pt}}}~\textbf{\fontsize{8.5}{11}\selectfont FACULTAD DE INGENIERÍA, DISEÑO Y CIENCIAS APLICADAS} \hfill
+{\fontsize{7.5}{9}\selectfont\color{icesiMuted}\textbf{DEPARTAMENTO TIC}}\\[-0.22cm]
+{\color{icesiBorder}\hrule height 0.5pt}\vspace{0.08cm}
+
+\noindent
+\fontsize{7.5}{9.5}\selectfont
+\begin{tabularx}{\textwidth}{@{}L{2.8cm}X L{2.2cm}X@{}}
+\textbf{Curso:} & Computación en Internet I (09776) & \textbf{Semestre:} & 2026-2 \\
+\textbf{Profesor:} & Alejandro Muñoz M. & \textbf{Duración Estimada:} & 2 Horas \\
+\textbf{Estudiante 1:} & \hrulefill & \textbf{Código 1:} & \hrulefill \\
+\textbf{Estudiante 2:} & \hrulefill & \textbf{Código 2:} & \hrulefill \\
+\end{tabularx}
+\vspace{0.15cm}
+
+% SECCIÓN 1: Contexto y Arquitectura
+\sectionBadge{Contexto del Problema y Estado Inicial del Proyecto}
+
+El repositorio base de este taller contiene una plataforma distribuida de **Ajedrez Multijugador** sobre **ZeroC Ice 3.7**. El proyecto ya cuenta con:
+\begin{enumerate}[leftmargin=*,itemsep=1pt,topsep=2pt]
+    \item \textbf{Módulo \texttt{common/}:} Define el contrato Slice (\texttt{ChessService.ice}), el motor autoritativo de reglas de ajedrez (\texttt{ChessRules.java}) y el gestor de clasificación por Tiers (\texttt{TierManager.java}).
+    \item \textbf{Módulo \texttt{server/}:} Servidor ZeroC Ice en Java que expone simultáneamente un endpoint TCP (\texttt{default -p 10000}) y un endpoint WebSocket (\texttt{ws -h 0.0.0.0 -p 10002}).
+    \item \textbf{Módulo \texttt{client/}:} Cliente de escritorio en \textbf{JavaFX} completamente funcional que se conecta vía TCP al puerto \texttt{10000}.
+    \item \textbf{Módulo \texttt{client-js/}:} Interfaz web componetizada en \textbf{JavaScript Vainilla} que construye el DOM dinámicamente sobre un único contenedor \lstinline|<div id="root"></div>| (\texttt{src/app.js} y \texttt{src/components/}).
+\end{enumerate}
+
+\noindent
+\textbf{Objetivo del Taller:} Actualmente, la capa de servicios RPC del cliente web en \texttt{client-js/src/services/} se encuentra incompleta. Su misión es conectar el frontend en JavaScript Vainilla con el servidor ZeroC Ice mediante WebSockets, compilar y enlazar el contrato Slice \texttt{ChessService.js}, e implementar la actualización del tablero en tiempo real mediante **Conexiones Bidireccionales (\textit{BiDir})** sin utilizar \textit{polling}.
+
+% SECCIÓN 2: Contrato Slice
+\sectionBadge{Contrato Slice de Referencia (\texttt{common/src/main/slice/ChessService.ice})}
+
+Revisar las interfaces y estructuras definidas en el contrato Slice que deberán ser invocadas e implementadas desde JavaScript:
+
+\begin{lstlisting}[style=slicestyle]
+module ChessApp {
+    enum PieceColor { COLORWHITE, COLORBLACK, COLORNONE };
+    enum PieceType  { PIECEPAWN, PIECEKNIGHT, PIECEBISHOP, PIECEROOK, PIECEQUEEN, PIECEKING, PIECEEMPTY };
+    enum PlayerRole { ROLEWHITE, ROLEBLACK, ROLESPECTATOR };
+    enum GameStatus { WAITINGFORPLAYERS, INPROGRESS, CHECKWHITE, CHECKBLACK,
+                      CHECKMATEWHITEWINS, CHECKMATEBLACKWINS, STALEMATE, RESIGNEDWHITEWINS, RESIGNEDBLACKWINS, ABORTED };
+    enum TierLevel  { TIERBRONZE, TIERSILVER, TIERGOLD, TIERPLATINUM, TIERDIAMOND };
+
+    struct Position { int row; int col; };
+    struct ChessPiece { PieceType type; PieceColor color; };
+
+    interface ChessObserver {
+        void onGameStateChanged(GameState newState);
+        void onGameFinished(GameState finalState, string winnerNickname, int pointsDelta);
+    };
+
+    interface ChessService {
+        PlayerProfile getProfile(string nickname);
+        PlayerLeaderboard getLeaderboard();
+        string createRoom(string creatorNickname);
+        JoinRoomResult joinRoom(string roomCode, string nickname) throws RoomNotFoundException, ChessException;
+        void registerObserver(string roomCode, string nickname, ChessObserver* observer);
+        void unregisterObserver(string roomCode, string nickname);
+        GameState getGameState(string roomCode) throws RoomNotFoundException;
+        bool makeMove(string roomCode, string nickname, Position fromPos, Position toPos)
+            throws InvalidMoveException, NotPlayerTurnException, RoomNotFoundException;
+        void resign(string roomCode, string nickname) throws RoomNotFoundException, UnauthorizedActionException;
+        void leaveRoom(string roomCode, string nickname) throws RoomNotFoundException;
+        RoomList getActiveRooms();
+    };
+};
+\end{lstlisting}
+
+% SECCIÓN 3: Pliego de Requerimientos y Procedimiento de Implementación
+\sectionBadge{Pliego de Requerimientos y Procedimiento de Implementación}
+
+El desarrollo del taller no consiste en copiar y pegar código prefabricado, sino en \textbf{satisfacer un pliego de requerimientos funcionales y contratos de arquitectura distribuida} entre el servidor Java y el cliente Web en JavaScript Vainilla.
+
+\subsection*{Paso 1: Generación y Enlace del Contrato Slice (\texttt{ChessService.js})}
+Para que el cliente web conozca las estructuras de datos (\texttt{Position}, \texttt{GameState}, \texttt{MoveHistoryItem}), el proxy del servicio (\texttt{ChessServicePrx}) y la interfaz abstracta del observador (\texttt{ChessObserver}), es indispensable compilar el contrato Slice:
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+    \item Instalar las dependencias de Node.js en \texttt{client-js/}: \lstinline|npm install|.
+    \item Compilar el archivo Slice a JavaScript ejecutando:
+\begin{lstlisting}[style=bashstyle]
+npx slice2js ../common/src/main/slice/ChessService.ice --output-dir src/services
+# O mediante la tarea automatizada de Gradle desde la raiz: ./gradlew generateSliceJs
+\end{lstlisting}
+    \item Verificar que \texttt{client-js/src/services/ChessService.js} haya sido generado correctamente. Al cargarse en la aplicación junto con \texttt{lib/Ice.min.js}, este archivo debe exponer el espacio de nombres global \texttt{window.ChessApp}.
+\end{enumerate}
+
+\subsection*{Paso 2: Especificación BiDir en el Servidor Java (\texttt{ChessServiceImpl.java})}
+\textbf{Fundamento del Requerimiento:} Por restricciones de seguridad del navegador web, una aplicación en JavaScript no puede abrir puertos de escucha TCP locales. En consecuencia, el proxy del observador enviado por el cliente web carece de endpoints (\lstinline|observer.ice_getEndpoints().length == 0|).
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+    \item \textbf{Requerimiento:} En el método \texttt{registerObserver(roomCode, nickname, observer, current)}, verificar si el proxy recibido carece de endpoints asignados y si la conexión de transporte entrante (\texttt{current.con}) está activa.
+    \item \textbf{Comportamiento Esperado:} Si carece de endpoints, fijar el proxy a la conexión entrante actual mediante \lstinline|observer.ice_fixed(current.con)| antes de registrarlo en la sala (\texttt{GameRoom}). Si ya posee endpoints (como en los clientes de escritorio JavaFX), registrarlo directamente.
+\end{itemize}
+
+\subsection*{Paso 3: Especificación del Observador en Tiempo Real (\texttt{chessRealtimeObserver.js})}
+Implementar la clase \texttt{ChessRealtimeObserver} para recibir eventos \textit{push} del servidor sin utilizar \textit{polling}:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+    \item \textbf{Servant del Observador:} Definir una clase servant que herede de \texttt{this.ChessApp.ChessObserver} e implemente los métodos del contrato Slice:
+    \begin{itemize}[leftmargin=*,itemsep=0pt]
+        \item \texttt{onGameStateChanged(newState, \_current)}: Disparar el callback \texttt{onStateChanged} suministrando el nuevo \texttt{GameState}.
+        \item \texttt{onGameFinished(finalState, winnerNickname, pointsDelta, \_current)}: Disparar el callback \texttt{onGameFinished}.
+    \end{itemize}
+    \item \textbf{Ciclo de Vida del ObjectAdapter Bidireccional (\texttt{subscribe}):}
+    \begin{enumerate}[leftmargin=*,itemsep=1pt]
+        \item Limpiar cualquier adaptador previo invocando \texttt{cleanupAdapter()}.
+        \item Crear un \texttt{ObjectAdapter} local sin endpoints (\lstinline|communicator.createObjectAdapter("")|), registrar el servant bajo una identidad única generada con UUID, y activar el adaptador.
+        \item Obtener la conexión WebSocket activa del proxy del servicio (\lstinline|servicePrx.ice_getConnection()|) y asociarle el adaptador local (\lstinline|connection.setAdapter(this.adapter)|).
+        \item Obtener el proxy no tipado del observador desde el adaptador, realizar un \texttt{uncheckedCast} a \texttt{ChessObserverPrx} y registrarlo en el servidor invocando \lstinline|servicePrx.registerObserver(roomCode, nickname, observerPrx)|.
+    \end{enumerate}
+    \item \textbf{Desuscripción y Limpieza (\texttt{unsubscribe} y \texttt{cleanupAdapter}):} Notificar al servidor mediante \texttt{unregisterObserver}, remover la identidad del adaptador, destruir el adaptador local con \lstinline|await this.adapter.destroy()| y reestablecer las referencias a \texttt{null}.
+\end{itemize}
+
+\subsection*{Paso 4: Especificación del Servicio Cliente de Ice (\texttt{chessClientService.js})}
+Implementar la fachada de comunicación RPC de la aplicación web:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+    \item \textbf{Inicialización y Conexión (\texttt{connect}):}
+    Configurar las propiedades de inicialización del \texttt{Communicator}: tamaño de mensaje máximo en \texttt{"2048"}, \texttt{"Ice.ACM.Client.Timeout"} en \texttt{"0"} y \texttt{"Ice.ACM.Client.Heartbeat"} en \texttt{"3"}. Resolver el proxy remoto mediante la cadena \lstinline|ChessService:ws -h <host> -p <port>| y validar la conectividad con \texttt{checkedCast}.
+    \item \textbf{Consultas Concurrentes de Lobby (\texttt{getLobbyData}):}
+    Consultar concurrentemente las salas activas (\texttt{getActiveRooms}) y el ranking de jugadores (\texttt{getLeaderboard}) en el servidor aprovechando \texttt{Promise.all}.
+    \item \textbf{Acciones de Sala y Partida:}
+    Implementar la creación de sala (\texttt{createRoom}), unión a sala (\texttt{joinRoom}), rendición (\texttt{resign}) y abandono (\texttt{leaveRoom}).
+    \item \textbf{Ejecución de Jugadas (\texttt{makeMove}):}
+    Recibir las coordenadas numéricas \texttt{(fromRow, fromCol, toRow, toCol)}, construir dos instancias \texttt{Position} del contrato Slice e invocar remotamente el método \texttt{makeMove} del servicio Ice.
+\end{itemize}
+
+\subsection*{Paso 5: Especificación de Componentes DOM en JavaScript Vainilla (\texttt{client-js/src/components/})}
+Para cerrar el ciclo distribuido desde el transporte hasta la interfaz gráfica de usuario, se debe implementar la manipulación reactiva del DOM en los siguientes componentes:
+
+\subsubsection*{5.1 Renderizado del Tablero de Ajedrez (\texttt{ChessBoard.js} $\rightarrow$ \texttt{render})}
+\begin{itemize}[leftmargin=*,itemsep=1.5pt]
+    \item \textbf{Entradas:} \texttt{gameState} (objeto \texttt{GameState} de Slice), \texttt{selectedSquare} (coordenada \lstinline|{ row, col }| o \texttt{null}), \texttt{legalMoves} (arreglo de destinos válidos).
+    \item \textbf{RF-CB-01 (Validación y Grilla 8x8):} Si \texttt{gameState} o \texttt{gameState.board} no existen, abortar sin error. Recorrer las 64 casillas ($r \in [0,7], c \in [0,7]$), limpiar los hijos previos y restablecer la clase base (\lstinline|tile light| o \lstinline|tile dark| según $(r+c)\%2 == 0$).
+    \item \textbf{RF-CB-02 (Resaltado de Jugada y Selección):} Si \texttt{gameState.moves} contiene jugadas, aplicar la clase CSS \lstinline|last-move| a las casillas de origen y destino del último movimiento. Si $(r,c)$ coincide con \texttt{selectedSquare}, aplicar la clase \lstinline|selected|.
+    \item \textbf{RF-CB-03 (Dibujo de Piezas):} Si \texttt{board[r][c]} contiene una pieza activa (\lstinline|piece.type._name !== "PIECEEMPTY"|), crear un \lstinline|<span>| con clase \lstinline|piece-white| o \lstinline|piece-black| según su color, asignar como texto el glifo Unicode devuelto por \lstinline|getPieceGlyph(piece)| e insertarlo en la casilla.
+    \item \textbf{RF-CB-04 (Sugerencias de Movimiento):} Si $(r,c)$ figura en \texttt{legalMoves}, insertar un elemento indicador: con clase \lstinline|capture-ring| si la casilla contiene pieza rival, o con clase \lstinline|move-dot| si la casilla está vacía.
+\end{itemize}
+
+\subsubsection*{5.2 Historial de Jugadas por Turnos (\texttt{MoveHistory.js})}
+\begin{itemize}[leftmargin=*,itemsep=1.5pt]
+    \item \textbf{RF-MH-01 (Estructura y Estado Vacío):} Construir el contenedor principal (\lstinline|moves-card|), el encabezado fijo (\lstinline|player-card-header| con texto \textit{"Historial de Jugadas"}) y la lista desplazable (\lstinline|moves-list|). Si el arreglo \texttt{moves} está vacío o es nulo, mostrar un \lstinline|<em>| con el texto exacto \textit{"Sin jugadas aún"}.
+    \item \textbf{RF-MH-02 (Agrupación de Turnos):} Iterar el arreglo \texttt{moves} (\texttt{MoveHistoryItem[]}) de dos en dos. Para cada turno, renderizar una fila con el número de turno en negrita (\lstinline|<strong>1. </strong>|, \lstinline|<strong>2. </strong>|, etc.), seguido por la notación de blancas y, si existe, la de negras separadas por un espacio.
+    \item \textbf{RF-MH-03 (Auto-Scroll):} Ajustar \lstinline|listContainer.scrollTop = listContainer.scrollHeight| tras cada actualización para mantener visible la última jugada.
+\end{itemize}
+
+\subsubsection*{5.3 Tarjetas de Información de Jugadores (\texttt{PlayerCard.js} $\rightarrow$ \texttt{update})}
+\begin{itemize}[leftmargin=*,itemsep=1.5pt]
+    \item \textbf{RF-PC-01 (Nombre y Puntuación):} Mostrar el \texttt{nickname} recibido (o el nombre por defecto si es nulo) y el puntaje formateado como \lstinline|"<puntos> pts"| (usar 1200 por defecto).
+    \item \textbf{RF-PC-02 (Insignia de Tier y Capturas):} Actualizar la insignia de nivel invocando \lstinline|tierBadge.update(calculateTierFromPoints(puntos))|. Si existen piezas capturadas (\texttt{capturedPieces}), renderizar sus glifos ordenados y separados por espacio; de lo contrario, vaciar el contenedor.
+\end{itemize}
+
+\subsection*{Paso 6: Verificación de Interoperabilidad en Vivo (JavaFX + Web Vanilla JS + Espectador)}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+    \item Iniciar el servidor ZeroC Ice desde la raíz: \texttt{./gradlew runServer}.
+    \item Iniciar un cliente de escritorio JavaFX: \texttt{./gradlew runClient}, conectarse y crear una sala con el usuario \texttt{Alice}.
+    \item Iniciar el servidor web en \texttt{client-js/}: \texttt{npm start}, abrir \texttt{http://localhost:3000}, conectarse a \texttt{127.0.0.1:10002} y unirse a la sala de \texttt{Alice} con el usuario \texttt{Bob}.
+    \item Abrir una segunda pestaña del navegador o un segundo cliente JavaFX, unirse al mismo código con el usuario \texttt{Charlie} y verificar que recibe el rol \textbf{MODO ESPECTADOR}.
+    \item Realizar movimientos entre \texttt{Alice} (TCP) y \texttt{Bob} (WebSocket) y comprobar que los tres tableros, tarjetas e historiales se actualizan instantáneamente por eventos \textit{push} sin usar \textit{polling}.
+\end{enumerate}
+
+% SECCIÓN 4: Cuestionario
+\sectionBadge{Cuestionario de Análisis Conceptual y Arquitectura Distribuida}
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+    \item \textbf{Conexiones Bidireccionales (\textit{BiDir}) vs. Callbacks Tradicionales:} ¿Por qué un cliente ejecutándose en el navegador web requiere crear un \texttt{ObjectAdapter} sin endpoints (\lstinline|createObjectAdapter("")|) y asociarlo a \texttt{servicePrx.ice\_getConnection()}, y qué papel cumple \texttt{observer.ice\_fixed(current.con)} en el servidor Java?
+    \item \textbf{Transporte TCP vs. WebSockets en ZeroC Ice:} ¿Cómo logra el mismo servant \texttt{ChessServiceImpl} en Java atender simultáneamente a clientes JavaFX por TCP (\texttt{10000}) y clientes JavaScript por WebSockets (\texttt{10002}) sin duplicar la lógica del negocio?
+    \item \textbf{Empaquetado del Contrato con \texttt{slice2js}:} ¿Cómo registra el archivo generado \texttt{ChessService.js} el espacio de nombres \texttt{ChessApp} en el navegador y por qué es indispensable importar primero \texttt{Ice.min.js}?
+    \item \textbf{Validación Autoritativa:} Aunque el frontend en JavaScript calcula sugerencias visuales de casillas candidatas (\texttt{chessRulesHelper.js}), ¿por qué el servidor vuelve a validar cada movimiento en \texttt{GameRoom.makeMove}?
+\end{enumerate}
+
+% SECCIÓN 5: Rúbrica
+\sectionBadge{Rúbrica de Evaluación Modularizada por Punto (Escala 0.0 a 5.0)}
+
+\vspace{0.06cm}
+\noindent
+\setlength{\tabcolsep}{3.2pt}
+\fontsize{7.2}{9.2}\selectfont
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{|L{2.5cm}|C{0.5cm}|X|X|X|}
+\hline
+\rowcolor{icesiLight}
+\textbf{Criterio Evaluativo} & \textbf{Pts} & \textbf{Excelente (4.5 -- 5.0)} & \textbf{Aceptable (3.0 -- 4.4)} & \textbf{Insuficiente (0.0 -- 2.9)} \\ \hline
+
+\textbf{1. Compilación y Enlace de \texttt{ChessService.js}} & \textbf{0.5} &
+Genera \texttt{ChessService.js} con \texttt{slice2js}, lo ubica en \texttt{src/services/} y lo importa adecuadamente junto a \texttt{Ice.min.js}. &
+Genera el contrato pero requiere ajustes manuales en las rutas de importación. &
+No genera el archivo \texttt{ChessService.js} o falla al cargar el módulo \texttt{ChessApp}. \\ \hline
+
+\textbf{2. Soporte \texttt{BiDir} en Servidor Java} & \textbf{0.7} &
+Actualiza \texttt{ChessServiceImpl.registerObserver} usando \texttt{observer.ice\_fixed(current.con)} para proxies sin endpoints y explica su fundamento. &
+Aplica \texttt{ice\_fixed} sin validar endpoints vacíos o sin comprender el flujo bidireccional. &
+El servidor no fija la conexión WebSocket y falla al notificar a los clientes web. \\ \hline
+
+\textbf{3. Servicio RPC \texttt{ChessClientService}} & \textbf{1.0} &
+Implementa \texttt{connect} (\texttt{checkedCast} por \texttt{ws}), \texttt{getLobbyData}, \texttt{createRoom}, \texttt{joinRoom}, \texttt{makeMove}, \texttt{resign} y \texttt{leaveRoom}. &
+Conecta al servidor e invoca métodos del lobby pero presenta fallos al enviar coordenadas \texttt{Position} en \texttt{makeMove}. &
+No logra inicializar el \texttt{Communicator} ni establecer conexión con el endpoint WebSocket \texttt{10002}. \\ \hline
+
+\textbf{4. Observador en Tiempo Real (\texttt{ChessRealtimeObserver})} & \textbf{1.0} &
+Extiende \texttt{ChessApp.ChessObserver}, configura el \texttt{ObjectAdapter} sin endpoints sobre \texttt{ice\_getConnection()} y actualiza el estado en vivo sin \textit{polling}. &
+Registra el observador pero omite la limpieza en \texttt{unsubscribe} o depende parcialmente de \textit{polling}. &
+No implementa el servant \texttt{ChessObserver} o utiliza \texttt{setInterval} (\textit{polling}) en lugar de eventos Ice. \\ \hline
+
+\textbf{5. Componentes DOM en JS Vainilla} & \textbf{1.0} &
+Implementa satisfactoriamente los requerimientos de \texttt{ChessBoard.render}, \texttt{MoveHistory} y \texttt{PlayerCard}, sincronizando datos remotos de Slice con el DOM. &
+Implementa el tablero pero omite el historial o la tarjeta de jugador, o presenta inconsistencias visuales menores. &
+No implementa la lógica de renderizado del DOM o rompe la presentación de las piezas y jugadas. \\ \hline
+
+\textbf{6. Interoperabilidad y Sustentación} & \textbf{0.8} &
+Demuestra partida completa en tiempo real entre JavaFX, navegador web y espectador, respondiendo con rigor el cuestionario conceptual. &
+La partida funciona entre clientes pero existen errores menores al finalizar el juego o respuestas incompletas. &
+No hay interoperabilidad funcional entre el cliente JavaFX y el cliente JavaScript. \\ \hline
+
+\rowcolor{icesiLight}
+\textbf{CALIFICACIÓN TOTAL} & \textbf{5.0} & \multicolumn{3}{c|}{\textbf{Escala Institucional Universidad Icesi: Aprobatoria $\ge$ 3.0 $\bullet$ Duración: 2 Horas}} \\ \hline
+\end{tabularx}
+
+\vspace{0.16cm}
+
+% SECCIÓN 6: Instrucciones de Entrega
+\noindent
+{\color{icesiBlue}\textbf{\rule{2.5pt}{8.5pt}}}~\textbf{\fontsize{8.5}{11}\selectfont INSTRUCCIONES DE ENTREGA} \hfill {\fontsize{7.5}{9}\selectfont\color{icesiMuted}\textbf{REPOSITORIO GIT}}\\[-0.22cm]
+{\color{icesiBorder}\hrule height 0.5pt}\vspace{0.08cm}
+
+\begin{enumerate}[leftmargin=*,itemsep=1.5pt,topsep=2pt]
+    \fontsize{7.5}{9.5}\selectfont
+    \item Confirmar y enviar todos los cambios al repositorio del equipo (\lstinline|git add . && git commit -m "feat: implementacion cliente js y componentes dom con zeroc ice" && git push|).
+    \item Verificar que el archivo generado \texttt{client-js/src/services/ChessService.js}, los servicios de red (\texttt{chessClientService.js}, \texttt{chessRealtimeObserver.js}), los componentes DOM (\texttt{ChessBoard.js}, \texttt{MoveHistory.js}, \texttt{PlayerCard.js}) y la modificación en \texttt{ChessServiceImpl.java} estén incluidos en el commit.
+    \item Demostrar en vivo una partida conectando un jugador desde JavaFX, un jugador desde el navegador web y un tercer participante en modo espectador.
+\end{enumerate}
+
+\end{document}

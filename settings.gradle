@@ -1,0 +1,2 @@
+rootProject.name = 'ajedrez-ice-javafx'
+include 'common', 'server', 'client'
